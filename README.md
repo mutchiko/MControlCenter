@@ -29,7 +29,7 @@ The app uses the msi-ec driver that comes with the linux kernel, so device suppo
 
 [List of tested devices by msi-ec](https://github.com/BeardOverflow/msi-ec/blob/main/docs/supported_devices.md)
 
-In case of missing performance mode selection, follow the steps on the msi-ec github page to add support for your device.
+If your device is not on the list, follow the steps on the msi-ec github page to add support for your device.
 
 ## Installation
 
@@ -37,7 +37,9 @@ The application requires the `ec_sys` module with option `write_support=1` to ru
 
 If the `ec_sys` kernel module is not included in your distribution's kernel, you can use the `acpi_ec` kernel module.
 
-This is QT application. You may need to install `libqt5widgets5` to run.
+If your laptop is in the supported devices list but all the options are grayed out, consider [reinstalling](https://github.com/BeardOverflow/msi-ec?tab=readme-ov-file#installation) the `msi-ec` driver.
+
+This is a QT application. You may need to install `libqt6widgets6` or its equivalent on your distribution for the applicatoin to run.
 
 ### Installation from the archive
 
