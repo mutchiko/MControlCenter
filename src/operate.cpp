@@ -26,7 +26,6 @@ MsiEcHelper msiEcHelper;
 
 const int cpuTempAddress = 0x68;
 const int gpuTempAddress = 0x80;
-const int batteryChargeAddress = 0x42;
 int batteryThresholdAddress;
 const int batteryThresholdAddress_0xEF = 0xEF;
 const int batteryThresholdAddress_0xD7 = 0xD7;
@@ -127,7 +126,7 @@ std::string Operate::getEcBuild() const {
 int Operate::getBatteryCharge() const {
     if (msiEcHelper.hasBatteryCapacity())
         return msiEcHelper.getBatteryCapacity();
-    return helper.getValue(batteryChargeAddress) - 1;
+    return -1;
 }
 
 int Operate::getBatteryThreshold() const {
