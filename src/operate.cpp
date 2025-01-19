@@ -66,12 +66,6 @@ const int fan2TempSettingStartAddress = 0x82;
 const int fanTempSettingsCount = fanSpeedSettingsCount - 1;
 
 
-// Modes
-const int shiftModeAddress = 0xD2;
-const int shiftMode0 = 0xC0;
-const int shiftMode1 = 0xC1;
-const int shiftMode2 = 0xC2;
-
 int fanModeAddress;
 const int fanModeAddress_0xD4 = 0xD4;
 const int fanModeAddress_0xF4 = 0xF4;
@@ -298,19 +292,7 @@ user_mode Operate::getUserMode() const {
                 return user_mode::unknown_mode;
         }
     }
-
-    switch (helper.getValue(shiftModeAddress)) {
-        case shiftMode0:
-            return user_mode::performance_mode;
-        case shiftMode1:
-            if (helper.getValue(fanModeAddress) == fanModeSilent)
-                return user_mode::silent_mode;
-            return user_mode::balanced_mode;
-        case shiftMode2:
-            return user_mode::super_battery_mode;
-        default:
-            return user_mode::unknown_mode;
-    }
+    return user_mode::unknown_mode;
 }
 
 fan_mode Operate::getFanMode() const {
@@ -404,7 +386,6 @@ void Operate::setCoolerBoostState(bool enabled) const {
 
 void Operate::setUserMode(user_mode userMode) const {
     shift_mode shiftMode = shift_mode::comfort_mode;
-    int shiftModeValue = shiftMode1;
     fan_mode fanMode = fan_mode::auto_fan_mode;
     int fanModeValue = fanModeAuto;
     bool superBattery = false;
@@ -416,7 +397,6 @@ void Operate::setUserMode(user_mode userMode) const {
             break;
         case user_mode::performance_mode:
             shiftMode = shift_mode::turbo_mode; // sport on some devices?
-            shiftModeValue = shiftMode0;
             userModeStr = "performance_mode";
             break;
         case user_mode::silent_mode:
@@ -426,7 +406,6 @@ void Operate::setUserMode(user_mode userMode) const {
             break;
         case user_mode::super_battery_mode:
             shiftMode = shift_mode::eco_mode;
-            shiftModeValue = shiftMode2;
             superBattery = true;
             userModeStr = "super_battery_mode";
             break;
@@ -436,8 +415,6 @@ void Operate::setUserMode(user_mode userMode) const {
 
     if (msiEcHelper.hasShiftMode()) {
         msiEcHelper.setShiftMode(shiftMode);
-    } else {
-        helper.putValue(shiftModeAddress, shiftModeValue);
     }
     
     if (msiEcHelper.hasShiftMode()) {
