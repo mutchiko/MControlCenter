@@ -43,8 +43,6 @@ const int usbPowerShareAddress = 0xBF;
 const int usbPowerShareOff = 0x08;
 const int usbPowerShareOn = 0x28;
 
-const int webCamAddress = 0x2E;
-
 const int fnSuperSwapAddress = 0xE8;
 
 int fan1Address;
@@ -244,8 +242,6 @@ bool Operate::getUsbPowerShareState() const {
 bool Operate::getWebCamState() const {
     if (msiEcHelper.hasWebcam())
         return msiEcHelper.getWebcam();
-    if (helper.getValue(webCamAddress) / 2 % 2 != 0)
-        return true;
     return false;
 }
 
@@ -349,8 +345,6 @@ void Operate::setWebCamState(bool enabled) const {
         return msiEcHelper.setWebcam(enabled);
     if (getWebCamState() == enabled)
         return;
-    int value = helper.getValue(webCamAddress) + (enabled ? 2 : -2);
-    helper.putValue(webCamAddress, value);
 }
 
 void Operate::setFnSuperSwapState(bool enabled) const {
@@ -499,10 +493,6 @@ bool Operate::isKeyboardBacklightSupport() const {
 bool Operate::isUsbPowerShareSupport() const {
     return (helper.getValue(usbPowerShareAddress) == usbPowerShareOff ||
             helper.getValue(usbPowerShareAddress) == usbPowerShareOn);
-}
-
-bool Operate::isWebCamOffSupport() const {
-    return helper.getValue(webCamAddress) > 0;
 }
 
 void Operate::loadSettings() const {
