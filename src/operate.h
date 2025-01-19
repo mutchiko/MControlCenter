@@ -109,7 +109,6 @@ public:
     [[nodiscard]] bool isKeyboardBacklightModeSupport() const;
     [[nodiscard]] bool isKeyboardBacklightSupport() const;
     [[nodiscard]] bool isUsbPowerShareSupport() const;
-    [[nodiscard]] bool isWebCamOffSupport() const;
 
     void loadSettings() const;
     void handleWakeEvent() const;
