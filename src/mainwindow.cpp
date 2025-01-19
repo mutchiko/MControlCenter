@@ -262,12 +262,6 @@ void MainWindow::loadConfigs() {
         ui->usbPowerShareCheckBox->setEnabled(false);
     }
 
-    if (operate.isWebCamOffSupport()) {
-        updateWebCamState();
-    } else {
-        ui->webCamCheckBox->setEnabled(false);
-    }
-
     updateFnSuperSwapState();
 }
 
