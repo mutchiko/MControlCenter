@@ -43,8 +43,6 @@ const int usbPowerShareAddress = 0xBF;
 const int usbPowerShareOff = 0x08;
 const int usbPowerShareOn = 0x28;
 
-const int coolerBoostAddress = 0x98;
-
 const int webCamAddress = 0x2E;
 
 const int fnSuperSwapAddress = 0xE8;
@@ -262,8 +260,6 @@ bool Operate::getFnSuperSwapState() const {
 bool Operate::getCoolerBoostState() const {
     if (msiEcHelper.hasCoolerBoost())
         return msiEcHelper.getCoolerBoost();
-    if (helper.getValue(coolerBoostAddress) > 127)
-        return true;
     return false;
 }
 
@@ -370,11 +366,6 @@ void Operate::setFnSuperSwapState(bool enabled) const {
 void Operate::setCoolerBoostState(bool enabled) const {
     if (msiEcHelper.hasCoolerBoost())
         return msiEcHelper.setCoolerBoost(enabled);
-    int value = helper.getValue(coolerBoostAddress);
-    if (enabled && (value < 128))
-        helper.putValue(coolerBoostAddress, value + 128);
-    if (!enabled && (value > 127))
-        helper.putValue(coolerBoostAddress, value - 128);
 }
 
 void Operate::setUserMode(user_mode userMode) const {
