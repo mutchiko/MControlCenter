@@ -26,9 +26,6 @@ MsiEcHelper msiEcHelper;
 
 const int cpuTempAddress = 0x68;
 const int gpuTempAddress = 0x80;
-int batteryThresholdAddress;
-const int batteryThresholdAddress_0xEF = 0xEF;
-const int batteryThresholdAddress_0xD7 = 0xD7;
 
 const int keyboardBacklightModeAddress = 0x2C;
 const int keyboardBacklightAlwaysOn = 0x00;
@@ -101,7 +98,6 @@ void Operate::updateEcDataAsync() const {
 
 bool Operate::doProbe() const {
     fan1Address = detectFan1Address();
-    batteryThresholdAddress = detectBatteryThresholdAddress();
     fanModeAddress = detectFanModeAddress();
     keyboardBacklightAddress = detectKeyboardBacklightAddress();
 
@@ -132,7 +128,7 @@ int Operate::getBatteryCharge() const {
 int Operate::getBatteryThreshold() const {
     if (msiEcHelper.hasBatteryEndThreshold())
         return msiEcHelper.getBatteryEndThreshold();
-    return helper.getValue(batteryThresholdAddress) - 128;
+    return -1;
 }
 
 charging_state Operate::getChargingStatus() const {
@@ -314,8 +310,6 @@ fan_mode Operate::getFanMode() const {
 void Operate::setBatteryThreshold(int value) const {
     if (msiEcHelper.hasBatteryEndThreshold())
         return msiEcHelper.setBatteryEndThreshold(value);
-    if (value != getBatteryThreshold())
-        helper.putValue(batteryThresholdAddress, value + 128);
 }
 
 void Operate::setKeyboardBacklightMode(int value) const {
@@ -491,7 +485,7 @@ void Operate::setValue(int address, int value) const {
 }
 
 bool Operate::isBatteryThresholdSupport() const {
-    return msiEcHelper.hasBatteryEndThreshold() || batteryThresholdAddress != 0;
+    return msiEcHelper.hasBatteryEndThreshold();
 }
 
 bool Operate::isKeyboardBacklightModeSupport() const {
@@ -572,14 +566,6 @@ int Operate::detectFan1Address() const {
     if (value_0xC9 > 0 && value_0xC9 < 50)
         return fan1Address_0xCD;
     return fan1Address_0xC9;
-}
-
-int Operate::detectBatteryThresholdAddress() const {
-    if (128 <= helper.getValue(batteryThresholdAddress_0xEF) && helper.getValue(batteryThresholdAddress_0xEF) <= 228)
-        return batteryThresholdAddress_0xEF;
-    if (128 <= helper.getValue(batteryThresholdAddress_0xD7) && helper.getValue(batteryThresholdAddress_0xD7) <= 228)
-        return batteryThresholdAddress_0xD7;
-    return 0;
 }
 
 int Operate::detectFanModeAddress() const {
