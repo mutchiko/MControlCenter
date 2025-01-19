@@ -113,7 +113,6 @@ public:
     void loadSettings() const;
     void handleWakeEvent() const;
 
-    void putSuperBatteryModeValue(bool enabled) const;
 private:
     int detectFan1Address() const;
     int detectBatteryThresholdAddress() const;
