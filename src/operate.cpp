@@ -43,8 +43,6 @@ const int usbPowerShareAddress = 0xBF;
 const int usbPowerShareOff = 0x08;
 const int usbPowerShareOn = 0x28;
 
-const int fnSuperSwapAddress = 0xE8;
-
 int fan1Address;
 const int fan1Address_0xC9 = 0xC9;
 const int fan1Address_0xCD = 0xCD;
@@ -246,8 +244,6 @@ bool Operate::getWebCamState() const {
 bool Operate::getFnSuperSwapState() const {
     if (msiEcHelper.hasFnWinSwap())
         return msiEcHelper.getFnWinSwap();
-    if (helper.getValue(fnSuperSwapAddress) / 16 % 2 != 0)
-        return true;
     return false;
 }
 
@@ -349,10 +345,6 @@ void Operate::setFnSuperSwapState(bool enabled) const {
     Settings::setValue(settingsGroup + "FnSuperSwap", enabled);
     if (msiEcHelper.hasFnWinSwap())
         return msiEcHelper.setFnWinSwap(enabled);
-    if (getFnSuperSwapState() == enabled)
-        return;
-    int value = helper.getValue(fnSuperSwapAddress) + (enabled ? 16 : -16);
-    helper.putValue(fnSuperSwapAddress, value);
 }
 
 void Operate::setCoolerBoostState(bool enabled) const {
