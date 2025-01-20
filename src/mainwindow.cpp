@@ -20,10 +20,12 @@
 #include "./ui_mainwindow.h"
 #include "operate.h"
 #include "settings.h"
+#include "msi-ec_helper.h"
 #include <QTimer>
 #include <QMessageBox>
 
 Operate operate;
+MsiEcHelper msiEcChecker;
 
 bool isActive = false;
 bool isUpdateDataError = false;
@@ -153,6 +155,9 @@ MainWindow::MainWindow(QWidget *parent)
     if (!operate.isEcSysModuleLoaded() && !operate.loadEcSysModule())
         QMessageBox::critical(nullptr, this->windowTitle(), tr("Failed to load the ec_sys kernel module"));
 
+    if (!msiEcChecker.isMsiEcModuleLoaded())
+        QMessageBox::critical(nullptr, this->windowTitle(), tr("Failed to load the msi-ec driver, check the <About> page for more help"));
+
     if(operate.updateEcData())
         updateData();
 
@@ -204,7 +209,7 @@ void MainWindow::realtimeUpdate() {
 }
 
 void MainWindow::updateData() {
-    if (!isUpdateDataError && !operate.getEcVersion().empty()) {
+    if (msiEcChecker.isMsiEcModuleLoaded()) {
         if (!isActive) {
             operate.doProbe();
             setTabsEnabled(true);
@@ -369,7 +374,7 @@ void MainWindow::updateCoolerBoostState() const {
 }
 
 void MainWindow::updateUserMode() {
-    if (operate.updateEcData()) {
+    if (msiEcChecker.isMsiEcModuleLoaded()) {
         switch (operate.getUserMode()) {
             case user_mode::balanced_mode:
                 ui->balancedModeRadioButton->click();
