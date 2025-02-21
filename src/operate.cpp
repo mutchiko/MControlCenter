@@ -90,6 +90,11 @@ void Operate::closeHelperApp() const {
     helper.quit();
 }
 
+bool Operate::isMsiEcSysModuleLoaded() const {
+
+    return msiEcHelper.isMsiEcModuleLoaded();
+}
+
 bool Operate::isEcSysModuleLoaded() const {
     return helper.isEcSysModuleLoaded();
 }

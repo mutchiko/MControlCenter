@@ -153,6 +153,9 @@ MainWindow::MainWindow(QWidget *parent)
     if (!operate.isEcSysModuleLoaded() && !operate.loadEcSysModule())
         QMessageBox::critical(nullptr, this->windowTitle(), tr("Failed to load the ec_sys kernel module"));
 
+    if (!operate.isMsiEcSysModuleLoaded())
+        QMessageBox::critical(nullptr, this->windowTitle(), tr("msi-ec driver is NOT installed! check the <About> page"));
+
     if(operate.updateEcData())
         updateData();
 
@@ -204,7 +207,7 @@ void MainWindow::realtimeUpdate() {
 }
 
 void MainWindow::updateData() {
-    if (!isUpdateDataError && !operate.getEcVersion().empty()) {
+    if (!isUpdateDataError && operate.isMsiEcSysModuleLoaded()) {
         if (!isActive) {
             operate.doProbe();
             setTabsEnabled(true);
@@ -290,7 +293,7 @@ void MainWindow::updateBatteryThreshold() {
             ui->batteryThresholdValueLabel->setText(QString::number(batteryThreshold) + " %");
 
         switch (batteryThreshold) {
-            case 0:
+            case 100:
                 ui->bestMobilityRadioButton->click();
                 batteryThreshold = 100;
                 break;
@@ -390,9 +393,10 @@ void MainWindow::updateUserMode() {
                 ui->superBatteryModeRadioButton->click();
                 break;
             default:
-                ui->overviewTab->setDisabled(true);
-                if (modeTrayMenu)
-                    modeTrayMenu->setDisabled(true);
+                ui->superBatteryModeRadioButton->setChecked(0);
+                ui->silentModeRadioButton->setChecked(0);
+                ui->highPerformanceModeRadioButton->setChecked(0);
+                ui->balancedModeRadioButton->setChecked(0);
                 break;
         }
     }
@@ -464,7 +468,7 @@ void MainWindow::updateFanSpeedSettings() {
 }
 
 void MainWindow::setBestMobility() {
-    operate.setBatteryThreshold(0);
+    operate.setBatteryThreshold(100);
     updateBatteryThreshold();
 }
 

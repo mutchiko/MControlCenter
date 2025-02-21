@@ -1418,9 +1418,9 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="keyboardBacklitLabel">
+         <widget class="QLabel" name="keyboardBacklightLabel">
           <property name="text">
-           <string>Keyboard Backlit</string>
+           <string>Keyboard Backlight</string>
           </property>
          </widget>
         </item>

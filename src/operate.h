@@ -59,6 +59,7 @@ class Operate {
 public:
     Operate();
     void closeHelperApp() const;
+    [[nodiscard]] bool isMsiEcSysModuleLoaded() const;
     [[nodiscard]] bool isEcSysModuleLoaded() const;
     [[nodiscard]] bool loadEcSysModule() const;
     [[nodiscard]] bool updateEcData() const;
