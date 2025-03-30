@@ -152,9 +152,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tabWidget->setTabVisible(5, false);
     setTabsEnabled(false);
 
-    if (!operate.isEcSysModuleLoaded() && !operate.loadEcSysModule())
-        QMessageBox::critical(nullptr, this->windowTitle(), tr("Failed to load the ec_sys kernel module"));
-
     if (!msiEcChecker.isMsiEcModuleLoaded())
         QMessageBox::critical(nullptr, this->windowTitle(), tr("Failed to load the msi-ec driver, check the <About> page for more help"));
 
