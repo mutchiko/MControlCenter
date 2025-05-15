@@ -430,7 +430,6 @@ void MainWindow::updateUserMode() {
                 ui->balancedModeRadioButton->setChecked(false);
                 ui->highPerformanceModeRadioButton->setChecked(false);
             default:
-                ui->modeFormWidget->setDisabled(true);
                 if (modeTrayMenu)
                     modeTrayMenu->setDisabled(true);
                 break;
