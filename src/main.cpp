@@ -31,10 +31,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (!QDBusConnection::sessionBus().registerService(serviceName)) {
-            if (!QDBusConnection::sessionBus().registerService(serviceName)) {
-                fprintf(stderr, "Faild to register D-Bus service\n");
-        return 1;
-    }
+                fprintf(stderr, "Failed to register D-Bus service\n");
         return 1;
     }
 
