@@ -28,24 +28,27 @@ MControlCenter is a Free and Open Source GNU/Linux application that allows you t
 
 With version 0.5.0 the app uses the msi-ec driver that comes with the linux kernel (you might need to reinstall the driver), so device support depends on whether the kernel driver supports your device or not.
 
-[List of tested devices by msi-ec](https://github.com/BeardOverflow/msi-ec/blob/main/docs/supported_devices.md)
+[List of tested devices by msi-ec](https://github.com/BeardOverflow/msi-ec/discussions/277)
 
-If your device is not on the list, follow the steps on the `msi-ec` github page to add support for your device.
+If your device is not on the list, follow the steps on the `msi-ec` github page and open an issue there to add support for your device.
 
-## Installation
+## Pre-Installation
 
-This is a Qt6 application. You need to install `libqt6widgets6` or its equivalent on your distribution (```qt6-base``` for example). **the application will fail to open without it!** 
+This is a Qt6 application. So you need to have the following package installed first **(the application will fail to open without it!)**:
 
-Check the output of ```cat /sys/devices/platform/msi-ec/shift_mode``` in your terminal, if it says ```No such file or directory``` it means that you need to install or reinstall (uninstall first then install) the [msi-ec driver](https://github.com/BeardOverflow/msi-ec?tab=readme-ov-file#installation). or the application will open **but it wont have any effect!**  
+For Debian/Ubunutu/linux mint and all debian based distributions:
 
-Also, McontrolCenter requires the `ec_sys` module with option `write_support=1` to run.
+`sudo apt install libqt6widgets6 libqt6dbus6`
 
-If the `ec_sys` kernel module is not included in your distribution's kernel, you can use the `acpi_ec` kernel module.
+For Fedora you'll need: `qt6-qtbase-gui`, and for Arch Linux: `qt6-base`.
 
+Check the output of ```cat /sys/devices/platform/msi-ec/shift_mode``` in your terminal, if it says ```No such file or directory``` it means that you need to install or reinstall (uninstall first then install) the [msi-ec driver](https://github.com/BeardOverflow/msi-ec?tab=readme-ov-file#installation). or the application will open **but it can't do much**
 
-### Installation from the archive
+Also, to get temperature and fan curve support, you'll need to install `ec_sys` (most distributions) or `acpi_sys` (fedora) with `write_support=1` which is already enabled in most distributions. the app can still work with only `msi-ec` installed.
 
-1. Download `MControlCenter-x.x.x.tar.gz` from the releases page
+### Installation from releases
+
+1. Download `MControlCenter-x.x.x.tar.gz` from the [releases page](https://github.com/dmitry-s93/MControlCenter/releases)
 2. Unpack the archive with the program
 3. Open terminal in unpacked directory
 4. Run the script `sudo ./install`
@@ -53,25 +56,27 @@ If the `ec_sys` kernel module is not included in your distribution's kernel, you
 **Note:** if your distribution ships old versions of Qt (older than 6.8) like ubuntu/Linux mint (Qt 6.4), you might need to build from source, continue reading.
 
 ## Building from source
-After installing the main package (```qt6-base``` or ```libqt6widgets6```), you'll need to install other packages to build the app.
+
+After installing the main package (`qt6-base` or `libqt6widgets6`), you'll need to install other packages to build the app.
 
 For ubuntru/Linux mint:
-```qt6-base-dev``` and/or ```qt6-tools-dev```
 
-For Arch ```qt6-tools``` And for fedora ```qt6-qttools```
+`sudo apt install qt6-base-dev qt6-tools-dev`
+
+For Fedora `qt6-qttools` And for Arch `qt6-tools` 
 
 After you install the packages:
 
 Make sure the app is completely closed if it was installed before (check if there is a system tray icon and close it).
 
-Download the source code and extract the zip file.
+Download the source code [from here](https://github.com/dmitry-s93/MControlCenter/archive/refs/heads/main.zip) and extract the zip file.
 
-Open the ```scripts``` folder.
+Open the `scripts` folder.
 
 Open a terminal inside the folder, then run these scripts in order:
 
-1. ```build```
-2. ```create installer```
+1. `build`
+2. `create installer`
 
 If things went well, you should see a compressed file,
 
@@ -82,6 +87,7 @@ If things went well, you should see a compressed file,
 8. Check your apps, McontrolCenter should be there.
 
 If the installation was successful but the app fails to run, open a terminal and type ```mcontrolcenter```, copy the output and open an issue (**IF** there isn't one already).
+
 ### Installation from the repository
 
 #### openSUSE Tumbleweed:
