@@ -302,7 +302,6 @@ void MainWindow::updateBatteryCharge() {
 }
 
 void MainWindow::updateBatteryThreshold() {
-    if (operate.updateEcData()) {
         int batteryThreshold = operate.getBatteryThreshold();
         if (batteryThreshold == 0)
             ui->batteryThresholdValueLabel->setText("100 %");
@@ -326,7 +325,6 @@ void MainWindow::updateBatteryThreshold() {
                 ui->customBatteryApplyButton->setEnabled(
                         batteryThreshold != ui->customBatteryThresholdSpinBox->value());
                 break;
-        }
 
         ui->customBatteryThresholdSpinBox->setValue(batteryThreshold);
     }
@@ -410,7 +408,6 @@ void MainWindow::updateCoolerBoostState() const {
 }
 
 void MainWindow::updateUserMode() {
-    if (operate.updateEcData()) {
         switch (operate.getUserMode()) {
             case user_mode::balanced_mode:
                 ui->balancedModeRadioButton->click();
@@ -435,7 +432,6 @@ void MainWindow::updateUserMode() {
                     modeTrayMenu->setDisabled(true);
                 break;
         }
-    }
 }
 
 void MainWindow::updateFanMode() {
